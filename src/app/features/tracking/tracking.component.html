@@ -1,17 +1,42 @@
 <div class="card">
   <div class="card-header">
-    <mat-button-toggle-group>
-      <mat-button-toggle value="play" [checked]="statusPlay" (change)="statusPlay = $event.source.checked; statusPause = !statusPlay">
-        <mat-icon>chevron_right</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle [checked]="statusPause" (change)="statusPause = $event.source.checked; statusPlay = !statusPause"
-        value="pause">
-        <mat-icon>pause</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
+    <div class="row">
+      <div class="col-sm">
+        <mat-button-toggle-group>
+          <mat-button-toggle value="play" [checked]="statusPlay" (change)="statusPlay = $event.source.checked; statusPause = !statusPlay">
+            <mat-icon>chevron_right</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [checked]="statusPause" (change)="statusPause = $event.source.checked; statusPlay = !statusPause"
+            value="pause">
+            <mat-icon>pause</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    <div class="col-sm" *ngIf>
+      <mat-form-field>
+        <mat-select placeholder="Lines" onchange="cmabioLinea()">
+          <mat-option *ngFor="let line of lineasSelector" [value]="line">
+            {{line}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-sm">
+        <mat-form-field>
+          <mat-select placeholder="Buses line" onchange="cmabioBusLinea()">
+            <mat-optgroup *ngFor="let group of lineasBusSelector" [label]="group.name" [disabled]="group.disabled">
+                    <mat-option *ngFor="let bus of group.values" [value]="bus">
+                      {{bus}}
+                    </mat-option>
+                  </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+      </div>
   </div>
-  <div class="card-body">
-    <mat-progress-bar mode="determinate" [value]="progressbarValue"></mat-progress-bar>
-    <div #gmap25 style="width:100%;height:600px"></div>
-  </div>
+
+</div>
+<div class="card-body">
+  <mat-progress-bar mode="determinate" [value]="progressbarValue"></mat-progress-bar>
+  <div #gmap25 style="width:100%;height:600px"></div>
+</div>
 </div>

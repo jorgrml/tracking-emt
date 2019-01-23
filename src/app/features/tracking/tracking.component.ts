@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 import * as TrackingActions from './tracking.actions';
 import { State } from './tracking.reducer';
 import { interval } from 'rxjs';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
-
-const _SECONDS:number = 90;
+const _SECONDS: number = 90;
 
 @Component({
   selector: 'my-Tracking',
@@ -17,6 +17,8 @@ export class TrackingComponent {
   statusPause: boolean = false;
   statusPlay: boolean = true;
   progressbarValue: number = 100;
+  lineasSelector:any[] = [];
+  lineasBusSelector:any[] = [];
   curSec: number = 0;
   data: Observable<any>;
   timer$: any = interval(1000);
@@ -33,7 +35,8 @@ export class TrackingComponent {
   ];
   selectedMarkerType: string = "info-i_maps.png";
   constructor(
-    private store: Store<State>
+    private store: Store<State>,
+    private http: HttpClient,
   ) {
     this.data = this.store.pipe(
       select((state: State) => state.TrackingModule.Tracking)
@@ -42,14 +45,14 @@ export class TrackingComponent {
       this.cargarDatos(response.data);
     });
     const sub = this.timer$.subscribe((sec) => {
-      if(this.statusPlay){
+      if (this.statusPlay) {
         this.progressbarValue = (sec % _SECONDS) * 100 / _SECONDS;
         this.curSec = (sec % _SECONDS);
         if (this.progressbarValue == 0) {
           this.refrescarDatos();
         }
       }
-  
+
     });
 
   }
@@ -72,6 +75,7 @@ export class TrackingComponent {
     };
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+    this.getOpciones();
   }
 
   addMarker = (location: any, label: string, color: string) => {
@@ -116,16 +120,16 @@ export class TrackingComponent {
     if (nuevosDatos.length > 0) {
       this.clearLines();
       for (let entry of nuevosDatos) {
-       /* for (let marca of this.markers) {
-
-          if (marca.label.text == entry.codBus && marca.position.lat() != entry.geometry.coordinates[1]) {
-            let destino = new google.maps.LatLng(entry.geometry.coordinates[1], entry.geometry.coordinates[0]);
-            let origen = new google.maps.LatLng(marca.position.lat(), marca.position.lng());
-            this.crearFlecha(origen, destino, marca.label.text);
-          }
-
-        }
-      */
+        /* for (let marca of this.markers) {
+ 
+           if (marca.label.text == entry.codBus && marca.position.lat() != entry.geometry.coordinates[1]) {
+             let destino = new google.maps.LatLng(entry.geometry.coordinates[1], entry.geometry.coordinates[0]);
+             let origen = new google.maps.LatLng(marca.position.lat(), marca.position.lng());
+             this.crearFlecha(origen, destino, marca.label.text);
+           }
+ 
+         }
+       */
         this.crearPath(entry);
       }
 
@@ -188,6 +192,38 @@ export class TrackingComponent {
 
   }
 
+  getOpciones = () => {
+    this.http.post("https://datosabiertos.malaga.eu/recursos/transporte/EMT/EMTlineasUbicaciones/lineasyubicaciones.geojson", {})
+      .subscribe(
+        (val: any) => {
+          console.log("POST call successful value returned in body", val);
+          let aux: string[] = [];
+          for (let bus of val) {
+            aux.push(bus.codLinea);
+          }
+          this.lineasSelector = aux.filter((el, i, a) => i === a.indexOf(el));
+          
+          for(let linea of this.lineasSelector){
+            let auxBusLinea:any[] = [];
+            for (let bus of val) {
+              if(linea == bus.codLinea){
+                auxBusLinea.push(bus.codBus);
+              }
+            }
+            this.lineasBusSelector.push({
+              name: linea,
+              values: auxBusLinea 
+            })
+          }
+        },
+        response => {
+          console.log("POST call in error", response);
+        },
+        () => {
+          console.log("The POST observable is now completed.");
+        });
+
+  }
   crearPath = (entry: any) => {
 
     let encontrado = false;
@@ -195,7 +231,7 @@ export class TrackingComponent {
     for (let geometry of entry.path) {
       pathGeo.push(new google.maps.LatLng(geometry.coordinates[1], geometry.coordinates[0]))
     }
-    if (pathGeo.length>1) {
+    if (pathGeo.length > 1) {
       let line: any = new google.maps.Polyline({
         path: pathGeo,
         map: this.map,
