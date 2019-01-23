@@ -1,4 +1,4 @@
-# Demo de Angular+ngRedux
+# Demo de Webpack+Angular+ngRedux
 
 Esta demo monitoriza el recorrido de los autobuses de la [EMT de Málaga](http://www.emtmalaga.es/) a través del servicio publico de sus  [posiciones](https://datosabiertos.malaga.eu/recursos/transporte/EMT/EMTlineasUbicaciones/lineasyubicaciones.geojson).
 
