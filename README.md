@@ -4,7 +4,7 @@ Esta demo monitoriza el recorrido de los autobuses de la [EMT de Málaga](http:/
 
 ### Instalacion
 
-Se requiere [Node.js](https://nodejs.org/) v4+.
+Se requiere [Node.js](https://nodejs.org/) v8+.
 
 Instalar las dependencias y arrancar el servidor
 
