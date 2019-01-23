@@ -9,7 +9,7 @@ Se requiere [Node.js](https://nodejs.org/) v4+.
 Instalar las dependencias y arrancar el servidor
 
 ```sh
-$ cd dillinger
+$ cd tracking-emt
 $ npm i
 $ npm start dev
 ```
