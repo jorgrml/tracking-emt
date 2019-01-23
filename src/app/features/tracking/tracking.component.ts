@@ -193,6 +193,7 @@ export class TrackingComponent {
   }
 
   getOpciones = () => {
+    /*
     this.http.post("https://datosabiertos.malaga.eu/recursos/transporte/EMT/EMTlineasUbicaciones/lineasyubicaciones.geojson", {})
       .subscribe(
         (val: any) => {
@@ -222,6 +223,7 @@ export class TrackingComponent {
         () => {
           console.log("The POST observable is now completed.");
         });
+        */
 
   }
   crearPath = (entry: any) => {

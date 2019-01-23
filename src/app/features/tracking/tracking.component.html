@@ -21,7 +21,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col-sm">
+    <div class="col-sm" *ngIf>
         <mat-form-field>
           <mat-select placeholder="Buses line" onchange="cmabioBusLinea()">
             <mat-optgroup *ngFor="let group of lineasBusSelector" [label]="group.name" [disabled]="group.disabled">
