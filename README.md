@@ -34,7 +34,7 @@ La aplicación va refrescando la posicion de los buses de la linea 25 montando e
 ![](/src/assets/readme/1.png?raw=true "Track")
 
 
-Este recorrido se puede reproducir habilitando la extensión de chrome para [ngRedux](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) 
+Este recorrido se puede reproducir habilitando la extensión de chrome para [ngRx](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) 
 
 ![](/src/assets/readme/2.jpg?raw=true "Dev")
 
